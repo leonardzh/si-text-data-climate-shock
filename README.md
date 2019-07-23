@@ -5,4 +5,3 @@ Summer institute practice for text data and climate shocks
 - Portia Williams
 - Zheng Liu
 
-## Topic 1 - Sentiment analysis
