@@ -1,7 +1,7 @@
 ---
 title: "Mini-Project Presentation"
 author: "Portia Williams, Zheng Liu"
-date: "7/25/2019"
+date: "7/26/2019"
 output: ioslides_presentation
 ---
 
@@ -9,17 +9,33 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Pursuit Poject Idea
+## Pursuit Project Idea
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+*Title: Understanding social responses to environmental shocks-A text mining approach*
+
+Theme: Sudden and unexpected events
+
+6 members (US, Africa and Asia)
 
 ## From Mini-project to Pursuit
 
-sth how mini project contributes to main Pursuit projects
+Pursuit: Scoping stage with 3 sub projects
+
+Mini project related to project 1: Looking at the relationship between weather and sentiment
+
+Aim: Explore approaches for overall contribution to main project
+
+
 
 ## Data
+
+Source:
+
+Description:
+
+Format:
+
 
 ## Methods
 - Scraping
