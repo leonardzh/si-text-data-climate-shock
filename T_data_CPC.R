@@ -59,7 +59,7 @@ names(df_min) <- 'Tmin'
 combineT <- cbind(df_max,df_min)
 allData <- cbind(df_loc_news,combineT)
 
-
+allData <- allData[!is.na(allData[,'Tmax']),]
 
 #visualization
 library(reshape2)

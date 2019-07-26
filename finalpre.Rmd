@@ -36,19 +36,26 @@ Aim: Explore approaches for overall contribution to main project
 ## Methods
 - Scraping
   ```
-  
+  req = urllib.request.Request(url)
+  resp = urllib.request.urlopen(req)
+  respData = resp.read()
+  paragraphs = re.findall(r'<p>(.*?)</p>',str(respData))
   ```
+  
+- Sentiment Analysis
+
 - Regression
-- Text mininig
+Linear Regression
+
 - Interactive mapping
 
 ## Data
 
-Source: The Gdelt Project https://www.gdeltproject.org/
+Source: [The Gdelt Project](https://www.gdeltproject.org/)
 
-Description:
+Description: It provides events reported in articles published in the 65 live translated languages. The sample data we used was the latest 15 minute news data at 4pm, Tuesday.
 
-Format:
+Format: 61 columns total, but we are using id, latitude, longitude, city, origin_url only.
 
 ```{r load_data,context = 'data', echo = FALSE,results='hide',cache.extra = md5sum('T_data_CPC.R')}
 source('T_data_CPC.R')
@@ -95,6 +102,21 @@ allData$sentiscore <- get_sentiment(allData$txt_content)
 str(allData)
 
 ```
+### Interactive Map
+```{r load_map, echo = FALSE }
+library(leaflet)
+
+leaflet(data = allData[1:200,]) %>%
+    addTiles() %>%
+  addMarkers(~lon,~lat,
+             popup=~as.character(sentiscore), 
+             label = ~as.character(city)) %>%
+    setView(lng = -77, lat = 39, 
+        zoom = 7)
+
+
+
+```
 
 ### Linear Regression
 
@@ -103,23 +125,21 @@ model1 <- lm(
   formula = sentiscore ~ Tmin,
   data = allData)
 summary(model1)
+
+ggplot(allData,
+  aes(x = Tmin, y = sentiscore)) +
+  geom_point() +
+  geom_line(aes(y = predict(model1))) +
+  labs(title = 'Intercept and slope with lm')
 ```
 
----
-```{r load_map, echo = FALSE }
-library(leaflet)
+### Future Work
 
-leaflet(data = allData[1:200,]) %>%
-    addTiles() %>%
-  addMarkers(~lon,~lat,
-             #popup=~as.character(sentiscore), 
-             label = ~as.character(city)) %>%
-    setView(lng = -77, lat = 39, 
-        zoom = 7)
+1. Integrate text mining methods before the sentiment analysis
 
+2. More precise sentiment measurement
 
-
-```
+3. Higher quality data for news and temperature
 
 
 
