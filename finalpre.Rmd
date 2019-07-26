@@ -34,28 +34,50 @@ Mini project related to project 1: Looking at the relationship between weather a
 Aim: Explore approaches for overall contribution to main project
 
 ## Methods
-- Scraping
+- Scraping News Data
   ```
   req = urllib.request.Request(url)
   resp = urllib.request.urlopen(req)
   respData = resp.read()
+  ```
+- Text Mining
+  ```
   paragraphs = re.findall(r'<p>(.*?)</p>',str(respData))
   ```
   
 - Sentiment Analysis
 
 - Regression
+
 Linear Regression
+
+(Sentiments ~ Temperature)
 
 - Interactive mapping
 
+Leaflet map
+
+
 ## Data
+
+### News
 
 Source: [The Gdelt Project](https://www.gdeltproject.org/)
 
 Description: It provides events reported in articles published in the 65 live translated languages. The sample data we used was the latest 15 minute news data at 4pm, Tuesday.
 
 Format: 61 columns total, but we are using id, latitude, longitude, city, origin_url only.
+
+### Weather
+
+Source: [CPC Global Daily Temperature](https://www.esrl.noaa.gov/psd/data/gridded/data.cpc.globaltemp.html)
+
+Description:
+- CPC .50x.50 Global Daily Temperature
+- Spatial Coverage: 0.50 - degree latitude x 0.50 - degree longitude grid (720x360).
+- Updated daily
+
+Format: Max and Min tempertaure NetCDF4 files that can be directly downloaded from the link.
 
 ```{r load_data,context = 'data', echo = FALSE,results='hide',cache.extra = md5sum('T_data_CPC.R')}
 source('T_data_CPC.R')
@@ -133,6 +155,20 @@ ggplot(allData,
   labs(title = 'Intercept and slope with lm')
 ```
 
+```{r Linear Mix,eval=TRUE }
+library(lme4)
+model2 <- lmer(
+  sentiscore ~ (Tmin|Tmax),
+  data = allData)
+summary(model2)
+
+ggplot(allData,
+  aes(x = Tmax, y = sentiscore)) +
+  geom_point() +
+  geom_line(aes(y = predict(model2))) +
+  labs(title = 'Random intercept and slope with lmer')
+```
+
 ### Future Work
 
 1. Integrate text mining methods before the sentiment analysis
@@ -140,6 +176,21 @@ ggplot(allData,
 2. More precise sentiment measurement
 
 3. Higher quality data for news and temperature
+
+
+---
+## Thank you!
+
+
+
+\  
+\  
+\  
+\  
+
+Safe travel!
+
+
 
 
 
