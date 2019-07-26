@@ -2,7 +2,7 @@
 title: "Mini-Project Presentation"
 author: "Portia Williams, Zheng Liu"
 date: "7/26/2019"
-output: ioslides_presentation
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -25,6 +25,7 @@ Theme: Sudden and unexpected events
 6 members (US, Africa and Asia)
 
 ## From Mini-project to Pursuit
+![Framework](Proposal FINAL.bmp){ width=100% }
 
 Pursuit: Scoping stage with 3 sub projects
 
@@ -36,13 +37,22 @@ Aim: Explore approaches for overall contribution to main project
 
 ## Data
 
+Source:
 
+Description:
+
+Format:
 
 ```{r load_data,context = 'data', echo = FALSE,cache.extra = md5sum('T_data_CPC.R')}
 source('T_data_CPC.R')
 library(reshape2)
 library(ggplot2)
-head(allData)
+
+
+```
+--- 
+```{r plot_T_map,echo = FALSE}
+kable(allData[1:5,-5],caption = 'Data examples')
 longData<-melt(lastdaymax)
 longData<-longData[!is.na(longData$value),]
 
@@ -56,27 +66,10 @@ ggplot(longData, aes(x = Var1, y = Var2)) +
 ```
 
 
-## Data
-
-
-```{r load_map, echo = FALSE }
-library(leaflet)
-
-leaflet() %>%
-    addTiles() %>%
-    setView(lng = -77, lat = 39, 
-        zoom = 7)
 
 
 
 
-```
-
-Source:
-
-Description:
-
-Format:
 
 
 
@@ -89,123 +82,43 @@ Format:
 ## Results and discussion
 
 
+### Sentiment Analysis
+```{r sentiment_analysis,eval=TRUE,echo=TRUE}
 
+library(syuzhet)
 
+allData$senti <- get_nrc_sentiment(allData$txt_content)
+allData$sentiscore <- get_sentiment(allData$txt_content)
+str(allData)
 
+```
 
-Bulleted Lists
+### Linear Regression
 
-- SQL
-- Python
-- R
+```{r regression,eval=TRUE }
+model1 <- lm(
+  formula = sentiscore ~ Tmin,
+  data = allData)
+summary(model1)
+```
 
-Numbered Lists
+---
+```{r load_map, echo = FALSE }
+library(leaflet)
 
-4. SQL
-1. Python
-12. R
-
-Tables
-
-id | treatment
----|-----
-1  | control
-2  | exclosure
-
-# The Biggest Heading
-
-## The Second Heading
-
-### The Third Biggest Heading
+leaflet(data = allData[1:200,]) %>%
+    addTiles() %>%
+  addMarkers(~lon,~lat,
+             #popup=~as.character(sentiscore), 
+             label = ~as.character(city)) %>%
+    setView(lng = -77, lat = 39, 
+        zoom = 7)
 
 
 
 ```
-The *emphasis* indicated by asterisks here does not become
-italicized, as it would outside the "code fence".
-```
 
 
-
-
-
-
-## Sourced Input
-
-
-``
-library(ggplot2)
-ggplot(state_movers,
-  aes(x = reorder(current_state,-sum_new_movers), y = sum_new_movers)) +
-  geom_bar(stat = 'identity') +
-  theme(axis.text.x = element_text(
-    angle = 90, hjust = 1))
-```
-
-## Alternative Engines
-
-
-
-```
-echo "Hello, ${USER}!"
-```
-
-## Cache Dependencies
-
-```{r clean_bar_plot, dependson='load_data', echo = FALSE,eval=FALSE}
-ggplot(state_movers,
-  aes(
-    x = reorder(current_state, -sum_new_movers), 
-    y = sum_new_movers)) +
-  geom_bar(stat = 'identity') +
-  theme(axis.text.x = element_text(
-    angle = 90, hjust = 1))
-```
-
-## Input Objects
-
-```{r, echo = FALSE,eval=FALSE}
-selectInput('pick_state',
-  label = 'Pick a State',
-  choices = unique(cty_to_cty[['current_state']]))
-```
-
-```{r, context = 'server',eval=FALSE}
-library(dplyr)
-output [['mov_plot']] <- renderPlot({
-cty_to_cty %>%
-    filter(current_state == input[['pick_state']]) %>%
-    group_by(prior_1year_state) %>%
-    summarise(sum_new_movers = sum(movers_state_est, na.rm = TRUE)) %>%
-    ggplot(aes(x = prior_1year_state, y = sum_new_movers)) +
-    geom_bar(stat = 'identity') +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))
-})
-```
-
-```{r, echo = FALSE,eval = FALSE}
-plotOutput('mov_plot')
-```
-
-## Reactivity
-
-```{r, context = 'server',eval=FALSE}
-plot_data <- reactive({
-  filter(cty_to_cty, current_state == input[['pick_state']]) %>%
-    group_by(prior_1year_state) %>%
-    summarise(sum_new_movers = sum(movers_state_est, na.rm = TRUE))
-})
-output[['react_mov_plot']] <- renderPlot({
-  plot_data() %>%
-  ggplot(aes(x = prior_1year_state, y = sum_new_movers)) +
-       geom_bar(stat = 'identity') +
-       theme(axis.text.x = element_text(angle = 90, hjust = 1))
-})
-```
-
-```{r, echo = FALSE,eval=FALSE}
-plotOutput('react_mov_plot')
-```
 
 
 
