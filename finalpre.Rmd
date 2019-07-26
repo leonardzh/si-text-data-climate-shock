@@ -43,7 +43,7 @@ Description:
 
 Format:
 
-```{r load_data,context = 'data', echo = FALSE,cache.extra = md5sum('T_data_CPC.R')}
+```{r load_data,context = 'data', echo = FALSE,results='hide',cache.extra = md5sum('T_data_CPC.R')}
 source('T_data_CPC.R')
 library(reshape2)
 library(ggplot2)
@@ -56,7 +56,7 @@ kable(allData[1:5,-5],caption = 'Data examples')
 longData<-melt(lastdaymax)
 longData<-longData[!is.na(longData$value),]
 
-ggplot(longData, aes(x = Var1, y = Var2)) + 
+ggplot(longData, aes(x = Var1, y = -Var2)) + 
   geom_raster(aes(fill=value)) + 
   scale_fill_gradient(low="grey90", high="red") +
   labs(x="letters", y="LETTERS", title="Matrix") +
@@ -75,6 +75,7 @@ ggplot(longData, aes(x = Var1, y = Var2)) +
 
 ## Methods
 - Scraping
+
 - Regression
 - Text mininig
 - Interactive mapping
