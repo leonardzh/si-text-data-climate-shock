@@ -37,7 +37,7 @@ Aim: Explore approaches for overall contribution to main project
 
 ## Data
 
-Source:
+Source: The Gdelt Project https://www.gdeltproject.org/
 
 Description:
 
