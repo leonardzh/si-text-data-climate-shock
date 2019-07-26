@@ -33,7 +33,14 @@ Mini project related to project 1: Looking at the relationship between weather a
 
 Aim: Explore approaches for overall contribution to main project
 
-
+## Methods
+- Scraping
+  ```
+  
+  ```
+- Regression
+- Text mininig
+- Interactive mapping
 
 ## Data
 
@@ -73,12 +80,7 @@ ggplot(longData, aes(x = Var1, y = -Var2)) +
 
 
 
-## Methods
-- Scraping
 
-- Regression
-- Text mininig
-- Interactive mapping
 
 ## Results and discussion
 
